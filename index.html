@@ -18,9 +18,7 @@
         </header>
 
         <main class="app-main">
-            <section id="visualization-container" class="visualization-area" aria-label="Visualización del arreglo">
-                <!-- Aquí se montará el componente array-view -->
-            </section>
+            <array-view id="visualization-container" class="visualization-area" aria-label="Visualización del arreglo"></array-view>
             
             <aside id="code-container" class="code-area" aria-label="Código fuente del algoritmo">
                 <!-- Aquí se montará el componente code-viewer -->
@@ -28,18 +26,7 @@
         </main>
 
         <footer class="app-footer">
-            <section id="controls-container" class="controls-area" aria-label="Controles de simulación">
-                <div class="playback-controls">
-                    <button id="btn-prev" class="btn" data-i18n="btn_prev">⏮ Atrás</button>
-                    <button id="btn-play-pause" class="btn btn-primary" data-i18n="btn_play">▶ Play</button>
-                    <button id="btn-next" class="btn" data-i18n="btn_next">Adelante ⏭</button>
-                </div>
-                
-                <div class="speed-control">
-                    <label for="speed-slider" data-i18n="label_speed">Velocidad:</label>
-                    <input type="range" id="speed-slider" min="10" max="1000" step="10" value="860">
-                </div>
-            </section>
+            <simulation-controls id="controls-container" class="controls-area" aria-label="Controles de simulación"></simulation-controls>
         </footer>
     </div>
 

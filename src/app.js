@@ -7,8 +7,10 @@ import Simulator from './core/engine/Simulator.js';
 import BubbleSort from './core/algorithms/BubbleSort.js';
 import { PRNG } from './utils/mathUtils.js';
 import { eventBus } from './core/events/EventBus.js';
-import BasicRenderer from './components/BasicRenderer.js';
-import Controls from './components/Controls.js';
+
+// Importar los Web Components (Se autoconectan al DOM)
+import './components/ArrayView.js';
+import './components/SimulationControls.js';
 
 class App {
     constructor() {
@@ -30,11 +32,7 @@ class App {
         const prng = new PRNG(1234);
         const initialArray = prng.generateRandomArray(20, 10, 100);
 
-        // 2. Renderizador Visual y Controles
-        const renderer = new BasicRenderer('visualization-container', eventBus);
-        const controls = new Controls('controls-container', eventBus);
-
-        // 3. Motor Lógico
+        // 2. Motor Lógico (Los web components se instancian solos a través del HTML)
         const simulator = new Simulator(new BubbleSort(), initialArray, eventBus);
         simulator.initialize();
 
