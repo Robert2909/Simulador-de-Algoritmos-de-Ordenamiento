@@ -17,7 +17,8 @@ export const translations = {
         aria_controls: "Controles de simulación",
         aria_visualization: "Visualización del arreglo",
         aria_code: "Código fuente del algoritmo",
-        aria_theme_toggle: "Alternar modo claro y oscuro"
+        aria_theme_toggle: "Alternar modo claro y oscuro",
+        aria_mute_toggle: "Alternar sonido"
     },
     en: {
         app_title: "Algorithm Simulator",
@@ -31,6 +32,7 @@ export const translations = {
         aria_controls: "Simulation controls",
         aria_visualization: "Array visualization",
         aria_code: "Algorithm source code",
-        aria_theme_toggle: "Toggle light and dark mode"
+        aria_theme_toggle: "Toggle light and dark mode",
+        aria_mute_toggle: "Toggle sound"
     }
 };

@@ -9,6 +9,7 @@ import { PRNG } from './utils/mathUtils.js';
 import { eventBus } from './core/events/EventBus.js';
 import { i18n } from './utils/I18nEngine.js';
 import { themeManager } from './utils/ThemeManager.js';
+import { audioEngine } from './core/engine/AudioEngine.js';
 
 // Importar los Web Components (Se autoconectan al DOM)
 import './components/ArrayView.js';
@@ -31,6 +32,14 @@ class App {
 
             const themeToggleBtn = document.getElementById('theme-toggle');
             if (themeToggleBtn) themeToggleBtn.addEventListener('click', () => themeManager.toggleTheme());
+
+            const muteToggleBtn = document.getElementById('mute-toggle');
+            if (muteToggleBtn) {
+                muteToggleBtn.addEventListener('click', () => {
+                    const isMuted = audioEngine.toggleMute();
+                    muteToggleBtn.textContent = isMuted ? '🔇' : '🔊';
+                });
+            }
 
             this.setupUI();
         });
