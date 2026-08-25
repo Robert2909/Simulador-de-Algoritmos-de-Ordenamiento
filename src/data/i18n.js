@@ -14,7 +14,8 @@ export const translations = {
         label_speed: "Velocidad:",
         aria_controls: "Controles de simulación",
         aria_visualization: "Visualización del arreglo",
-        aria_code: "Código fuente del algoritmo"
+        aria_code: "Código fuente del algoritmo",
+        aria_theme_toggle: "Alternar modo claro y oscuro"
     },
     en: {
         app_title: "Algorithm Simulator",
@@ -25,6 +26,7 @@ export const translations = {
         label_speed: "Speed:",
         aria_controls: "Simulation controls",
         aria_visualization: "Array visualization",
-        aria_code: "Algorithm source code"
+        aria_code: "Algorithm source code",
+        aria_theme_toggle: "Toggle light and dark mode"
     }
 };

@@ -14,11 +14,14 @@
     <div id="app-root" class="app-layout">
         <header class="app-header">
             <h1 data-i18n="app_title">Simulador de Algoritmos</h1>
-            <!-- Aquí irá el componente de selección de algoritmo en el futuro -->
-            <select id="lang-selector" aria-label="Selector de idioma">
-                <option value="es">Español</option>
-                <option value="en">English</option>
-            </select>
+            
+            <div class="header-controls">
+                <button id="theme-toggle" class="btn-icon" data-i18n-aria="aria_theme_toggle" aria-label="Cambiar tema oscuro/claro">🌓</button>
+                <select id="lang-selector" aria-label="Selector de idioma">
+                    <option value="es">Español</option>
+                    <option value="en">English</option>
+                </select>
+            </div>
         </header>
 
         <main class="app-main">

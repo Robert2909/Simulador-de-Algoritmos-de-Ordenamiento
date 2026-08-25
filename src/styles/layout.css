@@ -28,11 +28,23 @@
     --font-family-mono: 'Fira Code', 'Courier New', monospace;
 }
 
+[data-theme="dark"] {
+    /* Paleta OKLCH invertida para legibilidad y confort visual */
+    --color-bg-body: oklch(0.18 0.01 250);
+    --color-bg-surface: oklch(0.22 0.02 250);
+    --color-bg-surface-elevated: oklch(0.28 0.02 250);
+    --color-text: oklch(0.95 0.01 250);
+    
+    /* Adaptación sutil de colores de acción para no encandilar */
+    --color-primary: oklch(0.65 0.15 250);
+}
+
 body {
     background-color: var(--color-bg-body);
     color: var(--color-text);
     font-family: var(--font-family-sans);
     margin: 0;
+    transition: background-color 0.3s ease, color 0.3s ease; /* Transición fluida RFC */
 }
 
 
@@ -51,6 +63,27 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); /* Toque estético moderno */
+}
+
+.header-controls {
+    display: flex;
+    gap: var(--spacing-md);
+    align-items: center;
+}
+
+.btn-icon {
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    padding: 0;
+    cursor: pointer;
+    color: var(--color-text);
+    transition: transform 0.2s;
+}
+
+.btn-icon:hover {
+    transform: scale(1.1);
 }
 
 .app-main {

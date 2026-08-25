@@ -8,6 +8,7 @@ import BubbleSort from './core/algorithms/BubbleSort.js';
 import { PRNG } from './utils/mathUtils.js';
 import { eventBus } from './core/events/EventBus.js';
 import { i18n } from './utils/I18nEngine.js';
+import { themeManager } from './utils/ThemeManager.js';
 
 // Importar los Web Components (Se autoconectan al DOM)
 import './components/ArrayView.js';
@@ -22,7 +23,6 @@ class App {
 
     init() {
         document.addEventListener("DOMContentLoaded", () => {
-            // Traducir los textos iniciales (Ej: H1)
             i18n.translateDOM();
             
             // Conectar el Selector de Idioma
@@ -30,6 +30,14 @@ class App {
             if (langSelector) {
                 langSelector.addEventListener('change', (e) => {
                     i18n.setLocale(e.target.value);
+                });
+            }
+
+            // Conectar Alternador de Tema
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            if (themeToggleBtn) {
+                themeToggleBtn.addEventListener('click', () => {
+                    themeManager.toggleTheme();
                 });
             }
 
