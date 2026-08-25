@@ -37,7 +37,29 @@
     
     /* Adaptación sutil de colores de acción para no encandilar */
     --color-primary: oklch(0.65 0.15 250);
+
+    /* Lexer Theme Oscuro */
+    --token-keyword: oklch(0.75 0.15 280); /* Morado claro */
+    --token-number: oklch(0.8 0.15 40); /* Naranja pastel */
+    --token-operator: oklch(0.75 0.1 200); /* Cyan suave */
+    --token-comment: oklch(0.7 0.1 120); /* Verde olivo claro */
 }
+
+/* Lexer Theme Claro (Root) */
+:root {
+    --token-keyword: oklch(0.4 0.15 280); /* Morado vibrante */
+    --token-number: oklch(0.6 0.15 40); /* Naranja intenso */
+    --token-operator: oklch(0.5 0.1 200); /* Teal oscuro */
+    --token-comment: oklch(0.6 0.1 120); /* Verde olivo oscuro */
+}
+
+/* Clases de Syntax Highlighting */
+.token-keyword { color: var(--token-keyword); font-weight: bold; }
+.token-number { color: var(--token-number); }
+.token-operator { color: var(--token-operator); }
+.token-punctuation { color: var(--color-text); opacity: 0.7; }
+.token-identifier { color: var(--color-text); }
+.token-comment { color: var(--token-comment); font-style: italic; }
 
 body {
     background-color: var(--color-bg-body);

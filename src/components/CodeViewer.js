@@ -5,6 +5,7 @@
  * y resalta la línea en ejecución leyendo el currentLine del Snapshot.
  */
 import { eventBus } from '../core/events/EventBus.js';
+import { Lexer } from '../utils/Lexer.js';
 
 export default class CodeViewer extends HTMLElement {
     constructor() {
@@ -30,19 +31,32 @@ export default class CodeViewer extends HTMLElement {
 
     renderInitialCode() {
         this.innerHTML = '';
-        const container = document.createElement('pre');
-        container.className = 'code-block';
+        const pre = document.createElement('pre');
+        pre.className = 'code-block';
         
-        this.currentLineElements = this.codeLines.map((lineText, index) => {
+        this.currentLineElements = [];
+        
+        this.codeLines.forEach((lineText, index) => {
             const lineEl = document.createElement('div');
             lineEl.className = 'code-line';
-            lineEl.textContent = lineText;
-            lineEl.dataset.lineIndex = index;
-            container.appendChild(lineEl);
-            return lineEl;
+            
+            const tokens = Lexer.tokenize(lineText);
+            tokens.forEach(t => {
+                if (t.type === 'whitespace') {
+                    lineEl.appendChild(document.createTextNode(t.value));
+                } else {
+                    const span = document.createElement('span');
+                    span.className = `token-${t.type}`;
+                    span.textContent = t.value;
+                    lineEl.appendChild(span);
+                }
+            });
+            
+            this.currentLineElements.push(lineEl);
+            pre.appendChild(lineEl);
         });
-
-        this.appendChild(container);
+        
+        this.appendChild(pre);
     }
 
     updateUI(payload) {
