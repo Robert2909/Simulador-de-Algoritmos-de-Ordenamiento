@@ -25,15 +25,26 @@ export default class ArrayView extends HTMLElement {
     updateUI(payload) {
         const state = payload.presentationSnapshot.mathematicalState.main;
         const marks = payload.presentationSnapshot.marks || {};
-        
-        // Renderizado Vanilla
-        this.innerHTML = '';
         const maxVal = Math.max(...state, 1);
         
+        // Renderizado Híbrido: Si cambia el tamaño, recreamos DOM; si no, reciclamos (permitiendo transiciones CSS)
+        if (this.children.length !== state.length) {
+            this.innerHTML = '';
+            state.forEach(() => {
+                const bar = document.createElement('div');
+                this.appendChild(bar);
+            });
+        }
+        
+        const bars = this.children;
         state.forEach((val, index) => {
-            const bar = document.createElement('div');
-            bar.className = 'array-bar';
+            const bar = bars[index];
+            
+            // Altura dinámica animable
             bar.style.height = `${(val / maxVal) * 100}%`;
+            
+            // Reiniciar clases a estado base
+            bar.className = 'array-bar';
             
             if (marks['active'] && marks['active'].includes(index)) bar.classList.add('array-bar--active');
             if (marks['compare'] && marks['compare'].includes(index)) bar.classList.add('array-bar--compare');
@@ -43,8 +54,6 @@ export default class ArrayView extends HTMLElement {
             // Atributos Accesibles (RFC 3.8)
             bar.setAttribute('role', 'meter');
             bar.setAttribute('aria-valuenow', val);
-            
-            this.appendChild(bar);
         });
     }
 }

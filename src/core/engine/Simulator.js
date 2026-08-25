@@ -39,6 +39,8 @@ export default class Simulator {
     initialize() {
         this._iterator = this.algorithm.execute(this.context);
         this.status = 'ready';
+        // Emitir el fotograma inicial (paso 0) para que la UI se dibuje instantáneamente
+        this._emitStepApplied(new Step(0));
     }
 
     stepForward() {

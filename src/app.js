@@ -14,6 +14,7 @@ import { themeManager } from './utils/ThemeManager.js';
 import './components/ArrayView.js';
 import './components/SimulationControls.js';
 import './components/CodeViewer.js';
+import './components/InputControls.js';
 
 class App {
     constructor() {
@@ -63,12 +64,15 @@ class App {
         };
 
         // Función de Enrutamiento y Montaje
-        const loadAlgorithm = (algoId) => {
+        const loadAlgorithm = (algoId, customArray = null) => {
             stopPlayback();
             eventBus.emit('SIMULATION_COMPLETED'); // Forza reset UI Controls
             
-            const prng = new PRNG(1234); 
-            const initialArray = prng.generateRandomArray(20, 10, 100);
+            let initialArray = customArray;
+            if (!initialArray) {
+                const prng = new PRNG(1234); 
+                initialArray = prng.generateRandomArray(20, 10, 100);
+            }
             
             const algo = getAlgorithmInstance(algoId);
             eventBus.emit('ALGORITHM_LOADED', { code: algo.code });
@@ -96,6 +100,12 @@ class App {
         eventBus.subscribe('SPEED_CHANGED', (newDelayMs) => {
             currentDelayMs = newDelayMs;
             if (playInterval) startPlayback();
+        });
+
+        // Suscripción al InputController (Sección 4.6 del RFC)
+        eventBus.subscribe('DATA_INPUT_SUBMITTED', (payload) => {
+            const currentAlgo = algoSelector ? algoSelector.value : initialAlgo;
+            loadAlgorithm(currentAlgo, payload.array);
         });
 
         // Carga Inicial

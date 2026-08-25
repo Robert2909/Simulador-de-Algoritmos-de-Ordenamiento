@@ -35,7 +35,10 @@
         </main>
 
         <footer class="app-footer">
-            <simulation-controls id="controls-container" class="controls-area" data-i18n-aria="aria_controls" aria-label="Controles de simulación"></simulation-controls>
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--spacing-md);">
+                <input-controls></input-controls>
+                <simulation-controls id="controls-container" class="controls-area" data-i18n-aria="aria_controls" aria-label="Controles de simulación"></simulation-controls>
+            </div>
         </footer>
     </div>
 
