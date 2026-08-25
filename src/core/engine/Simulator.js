@@ -25,7 +25,8 @@ export default class Simulator {
         // Estado de Presentación
         this.presentationState = {
             marks: {},
-            lastComparison: null
+            lastComparison: null,
+            currentLine: null
         };
         
         this.trace = new Trace();
@@ -174,12 +175,15 @@ export default class Simulator {
                 right: op.rightIndex,
                 result: op.result
             };
+        } else if (op.type === 'SET_LINE') {
+            this.presentationState.currentLine = op.lineIndex;
         }
     }
 
     _reconstructPresentationState(targetStepIndex) {
         this.presentationState.marks = {};
         this.presentationState.lastComparison = null;
+        this.presentationState.currentLine = null;
         
         for (let s = 0; s < targetStepIndex; s++) {
             const step = this.trace.getStep(s);
@@ -194,6 +198,8 @@ export default class Simulator {
                         right: op.rightIndex,
                         result: op.result
                     };
+                } else if (op.type === 'SET_LINE') {
+                    this.presentationState.currentLine = op.lineIndex;
                 }
             }
         }
@@ -232,6 +238,7 @@ export default class Simulator {
             marks: { ...this.presentationState.marks },
             lastComparison: this.presentationState.lastComparison 
                 ? { ...this.presentationState.lastComparison } : null,
+            currentLine: this.presentationState.currentLine,
             mathematicalState: {
                 main: [...this.mathematicalState.main]
             }

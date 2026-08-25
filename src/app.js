@@ -68,7 +68,7 @@ class App {
 
         let currentSimulator = null;
         let playInterval = null;
-        let currentDelayMs = storage.load().speed;
+        let currentDelayMs = Math.max(10, Math.floor(150 / (storage.load().speed || 1.0)));
 
         const stopPlayback = () => {
             if (playInterval) {
