@@ -6,6 +6,7 @@
  */
 import { eventBus } from '../core/events/EventBus.js';
 import { i18n } from '../utils/I18nEngine.js';
+import { storage } from '../utils/StorageManager.js';
 
 export default class SimulationControls extends HTMLElement {
     constructor() {
@@ -18,6 +19,9 @@ export default class SimulationControls extends HTMLElement {
     }
 
     connectedCallback() {
+        const prefs = storage.load();
+        const initialSliderValue = Math.max(10, Math.min(1000, 1010 - prefs.speed));
+
         // Inyectamos el marcado base al conectarse al DOM
         this.innerHTML = `
             <div class="playback-controls">
@@ -27,7 +31,7 @@ export default class SimulationControls extends HTMLElement {
             </div>
             <div class="speed-control">
                 <label for="speed-slider" data-i18n="label_speed"></label>
-                <input type="range" id="speed-slider" min="10" max="1000" step="10" value="860">
+                <input type="range" id="speed-slider" min="10" max="1000" step="10" value="${initialSliderValue}">
             </div>
         `;
 
@@ -65,6 +69,7 @@ export default class SimulationControls extends HTMLElement {
         this.speedSlider.addEventListener('input', (e) => {
             const delayMs = 1010 - parseInt(e.target.value, 10); 
             eventBus.emit('SPEED_CHANGED', delayMs);
+            storage.save({ speed: delayMs });
         });
     }
 

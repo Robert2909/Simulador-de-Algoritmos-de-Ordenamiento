@@ -68,7 +68,7 @@ class App {
 
         let currentSimulator = null;
         let playInterval = null;
-        let currentDelayMs = 150;
+        let currentDelayMs = storage.load().speed;
 
         const stopPlayback = () => {
             if (playInterval) {
@@ -97,7 +97,7 @@ class App {
             let initialArray = customArray;
             if (!initialArray) {
                 const prng = new PRNG(1234); 
-                initialArray = prng.generateRandomArray(20, 10, 100);
+                initialArray = prng.generateRandomArray(storage.load().arraySize, 10, 100);
             }
             
             const algo = router.getAlgorithmInstance(algoId);

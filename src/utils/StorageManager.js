@@ -12,11 +12,11 @@ class StorageManager {
         
         // Contrato JSON Tipado Inquebrantable (RFC 3.7)
         this.defaultState = {
-            speed: 1.0,
+            speed: 150, // Delay en ms
             theme: 'system',
             colorblind: false,
             muted: false,
-            arraySize: 50,
+            arraySize: 20, // Tamaño inicial del arreglo
             locale: 'es'
         };
         

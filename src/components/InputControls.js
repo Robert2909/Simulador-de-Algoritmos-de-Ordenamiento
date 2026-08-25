@@ -1,6 +1,6 @@
 import { eventBus } from '../core/events/EventBus.js';
 import { PRNG } from '../utils/mathUtils.js';
-import { i18n } from '../utils/I18nEngine.js';
+import { storage } from '../utils/StorageManager.js';
 
 export default class InputControls extends HTMLElement {
     constructor() {
@@ -14,12 +14,15 @@ export default class InputControls extends HTMLElement {
     }
 
     render() {
+        const prefs = storage.load();
+        const initialSize = prefs.arraySize;
+        
         this.innerHTML = `
             <div class="input-controls-wrapper" style="display: flex; gap: var(--spacing-md); align-items: center;">
                 <div class="speed-control">
                     <label for="array-size" data-i18n="label_size">Tamaño:</label>
-                    <input type="range" id="array-size" min="5" max="100" value="20" style="width: 100px;">
-                    <span id="size-display" style="font-family: var(--font-family-mono); font-size: 0.9rem; min-width: 2ch;">20</span>
+                    <input type="range" id="array-size" min="5" max="100" value="${initialSize}" style="width: 100px;">
+                    <span id="size-display" style="font-family: var(--font-family-mono); font-size: 0.9rem; min-width: 2ch;">${initialSize}</span>
                 </div>
                 <button id="btn-generate" class="btn btn-primary" data-i18n="btn_generate">🎲 Random</button>
             </div>
@@ -46,6 +49,7 @@ export default class InputControls extends HTMLElement {
 
     generateAndEmit() {
         const size = parseInt(this.sizeInput.value, 10) || 20;
+        storage.save({ arraySize: size });
         const seed = Math.floor(Math.random() * 999999);
         const prng = new PRNG(seed);
         const newArray = prng.generateRandomArray(size, 5, 150);
