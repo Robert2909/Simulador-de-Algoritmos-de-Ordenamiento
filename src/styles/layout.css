@@ -92,3 +92,56 @@
 .array-bar--sorted {
     background-color: var(--color-success, #28a745); /* Verde: Ordenado */
 }
+
+/* =========================================
+   Controls CSS (Fase 2)
+   ========================================= */
+.controls-area {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
+}
+
+.playback-controls {
+    display: flex;
+    gap: var(--spacing-sm);
+}
+
+.btn {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: var(--border-radius-md, 4px);
+    cursor: pointer;
+    background-color: var(--color-bg-surface-elevated, #e9ecef);
+    color: var(--color-text, #212529);
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.btn:active {
+    transform: scale(0.95);
+}
+
+.btn-primary {
+    background-color: var(--color-primary, #007bff);
+    color: white;
+}
+
+.btn-active {
+    background-color: var(--color-warning, #ffc107);
+    color: black;
+}
+
+.speed-control {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    font-family: var(--font-family-sans, sans-serif);
+}
+
+.speed-control input[type="range"] {
+    cursor: pointer;
+}

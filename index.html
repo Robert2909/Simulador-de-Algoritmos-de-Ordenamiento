@@ -29,7 +29,16 @@
 
         <footer class="app-footer">
             <section id="controls-container" class="controls-area" aria-label="Controles de simulación">
-                <!-- Aquí se montará el componente controls -->
+                <div class="playback-controls">
+                    <button id="btn-prev" class="btn" data-i18n="btn_prev">⏮ Atrás</button>
+                    <button id="btn-play-pause" class="btn btn-primary" data-i18n="btn_play">▶ Play</button>
+                    <button id="btn-next" class="btn" data-i18n="btn_next">Adelante ⏭</button>
+                </div>
+                
+                <div class="speed-control">
+                    <label for="speed-slider" data-i18n="label_speed">Velocidad:</label>
+                    <input type="range" id="speed-slider" min="10" max="1000" step="10" value="860">
+                </div>
             </section>
         </footer>
     </div>
