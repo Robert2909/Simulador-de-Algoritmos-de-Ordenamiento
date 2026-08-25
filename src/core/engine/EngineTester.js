@@ -1,5 +1,6 @@
 import Simulator from './Simulator.js';
 import BubbleSort from '../algorithms/BubbleSort.js';
+import { PRNG } from '../../utils/mathUtils.js';
 
 class MockEventBus {
     constructor() {
@@ -17,8 +18,10 @@ class MockEventBus {
 export function runEngineTests() {
     console.group("%c=== INICIANDO PRUEBAS DEL MOTOR (FASE 1) ===", "color: #007bff; font-weight: bold; font-size: 14px;");
     
-    const initialArray = [5, 2, 9, 1, 5, 6, 8, 3, 7, 4];
-    console.log(`Array inicial: [${initialArray.join(', ')}]`);
+    // Validando Invariante 7: Determinismo
+    const prng = new PRNG(1234); // Semilla estática
+    const initialArray = prng.generateRandomArray(10, 1, 100);
+    console.log(`Array determinista inicial (Semilla: 1234): [${initialArray.join(', ')}]`);
     
     const eventBus = new MockEventBus();
     const simulator = new Simulator(new BubbleSort(), initialArray, eventBus);
