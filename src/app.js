@@ -92,13 +92,36 @@ class App {
             window.location.hash = algoId;
         };
 
-        // Leer URL Hash inicial
-        const initialAlgo = window.location.hash.replace('#', '') || 'bubble-sort';
+        // Lógica de Enrutamiento (RFC 3.9 - Reproducibilidad URL)
+        const parseHash = () => {
+            const rawHash = window.location.hash.replace('#', '');
+            if (!rawHash) return { algoId: 'bubble-sort', params: new URLSearchParams() };
+            
+            const [algoId, queryString] = rawHash.split('?');
+            return { algoId: algoId || 'bubble-sort', params: new URLSearchParams(queryString || '') };
+        };
+
+        const { algoId: initialAlgo, params: initialParams } = parseHash();
+        
+        // Aplicar parámetros de la URL si existen para garantizar reproducibilidad
+        let customInitialArray = null;
+        if (initialParams.has('seed') && initialParams.has('size')) {
+            const seed = parseInt(initialParams.get('seed'), 10);
+            const size = parseInt(initialParams.get('size'), 10);
+            if (!isNaN(seed) && !isNaN(size)) {
+                const prng = new PRNG(seed);
+                customInitialArray = prng.generateRandomArray(size, 10, 100);
+            }
+        }
         
         const algoSelector = document.getElementById('algo-selector');
         if (algoSelector) {
             algoSelector.value = initialAlgo;
-            algoSelector.addEventListener('change', (e) => loadAlgorithm(e.target.value));
+            algoSelector.addEventListener('change', (e) => {
+                // Al cambiar manualmente desde el selector, limpiamos la URL para generar nueva semilla
+                window.location.hash = e.target.value;
+                loadAlgorithm(e.target.value);
+            });
         }
 
         // Suscripciones globales del reproductor
@@ -113,12 +136,16 @@ class App {
 
         // Suscripción al InputController (Sección 4.6 del RFC)
         eventBus.subscribe('DATA_INPUT_SUBMITTED', (payload) => {
-            const currentAlgo = algoSelector ? algoSelector.value : initialAlgo;
+            const currentAlgo = algoSelector ? algoSelector.value : parseHash().algoId;
+            
+            // Actualizar URL con los nuevos parámetros para compartir
+            window.location.hash = `${currentAlgo}?seed=${payload.seed}&size=${payload.array.length}`;
+            
             loadAlgorithm(currentAlgo, payload.array);
         });
 
         // Carga Inicial
-        loadAlgorithm(initialAlgo);
+        loadAlgorithm(initialAlgo, customInitialArray);
         console.log("UI y Motor conectados exitosamente.");
     }
 }

@@ -46,8 +46,10 @@ export default class InputControls extends HTMLElement {
 
     generateAndEmit() {
         const size = parseInt(this.sizeInput.value, 10) || 20;
-        const newArray = this.prng.generateRandomArray(size, 5, 150);
-        eventBus.emit('DATA_INPUT_SUBMITTED', { array: newArray });
+        const seed = Math.floor(Math.random() * 999999);
+        const prng = new PRNG(seed);
+        const newArray = prng.generateRandomArray(size, 5, 150);
+        eventBus.emit('DATA_INPUT_SUBMITTED', { array: newArray, seed: seed });
     }
 }
 
