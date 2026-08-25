@@ -19,7 +19,7 @@ class EventBus {
         }
     }
 
-    publish(eventName, payload = null) {
+    emit(eventName, payload = null) {
         if (this.listeners.has(eventName)) {
             for (const callback of this.listeners.get(eventName)) {
                 callback(payload);

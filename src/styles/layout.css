@@ -59,3 +59,36 @@
         grid-template-rows: 1fr auto;
     }
 }
+
+/* =========================================
+   BasicRenderer CSS (Fase 1)
+   ========================================= */
+#visualization-container {
+    flex-direction: row; /* Las barras van lado a lado */
+    align-items: flex-end; /* Aplanadas abajo */
+    gap: 4px;
+}
+
+.array-bar {
+    width: 100%; /* Toma todo el ancho disponible dividido por el gap */
+    background-color: var(--color-primary, #007bff);
+    border-radius: 4px 4px 0 0;
+    transition: height 0.1s ease, background-color 0.1s ease;
+}
+
+/* Modificadores BEM según las marcas del algoritmo */
+.array-bar--active {
+    background-color: var(--color-warning, #ffc107); /* Amarillo: En evaluación */
+}
+
+.array-bar--compare {
+    background-color: var(--color-accent, #17a2b8); /* Cyan: Comparando */
+}
+
+.array-bar--swap {
+    background-color: var(--color-danger, #dc3545); /* Rojo: Intercambiando */
+}
+
+.array-bar--sorted {
+    background-color: var(--color-success, #28a745); /* Verde: Ordenado */
+}
