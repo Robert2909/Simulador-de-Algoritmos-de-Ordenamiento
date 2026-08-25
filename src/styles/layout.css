@@ -3,6 +3,39 @@
  * Utiliza CSS Grid para asegurar la contigüidad espacial.
  */
 
+:root {
+    /* Paleta OKLCH (Modo Claro por defecto) - Fase 4 */
+    --color-bg-body: oklch(0.98 0.01 250);
+    --color-bg-surface: oklch(1 0 0);
+    --color-bg-surface-elevated: oklch(0.95 0.02 250);
+    --color-text: oklch(0.2 0.05 250);
+    
+    /* Colores Semánticos Algorítmicos */
+    --color-primary: oklch(0.6 0.15 250); /* Azul */
+    --color-warning: oklch(0.8 0.15 90); /* Amarillo */
+    --color-accent: oklch(0.7 0.1 200); /* Cyan */
+    --color-danger: oklch(0.6 0.2 25); /* Rojo */
+    --color-success: oklch(0.65 0.15 150); /* Verde */
+
+    /* Espaciados y Bordes */
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --border-radius-md: 8px;
+
+    /* Tipografías */
+    --font-family-sans: 'Inter', system-ui, sans-serif;
+    --font-family-mono: 'Fira Code', 'Courier New', monospace;
+}
+
+body {
+    background-color: var(--color-bg-body);
+    color: var(--color-text);
+    font-family: var(--font-family-sans);
+    margin: 0;
+}
+
+
 .app-layout {
     display: grid;
     grid-template-rows: auto 1fr auto;
@@ -144,4 +177,35 @@
 
 .speed-control input[type="range"] {
     cursor: pointer;
+}
+
+/* =========================================
+   CodeViewer CSS
+   ========================================= */
+.code-area {
+    background-color: var(--color-bg-surface-elevated, #f8f9fa);
+    border-radius: var(--border-radius-md, 4px);
+    padding: var(--spacing-md, 1rem);
+    font-family: var(--font-family-mono, monospace);
+    overflow-y: auto;
+    font-size: 0.9rem;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.code-block {
+    margin: 0;
+    white-space: pre;
+}
+
+.code-line {
+    padding: 2px 8px;
+    border-left: 3px solid transparent;
+    color: var(--color-text, #212529);
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+.code-line--active {
+    background-color: var(--color-warning, #ffc107);
+    border-left-color: #d39e00;
+    font-weight: bold;
 }

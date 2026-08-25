@@ -12,6 +12,7 @@ import { i18n } from './utils/I18nEngine.js';
 // Importar los Web Components (Se autoconectan al DOM)
 import './components/ArrayView.js';
 import './components/SimulationControls.js';
+import './components/CodeViewer.js';
 
 class App {
     constructor() {

@@ -89,6 +89,17 @@ export default class AlgorithmContext {
     }
 
     /**
+     * Define la línea de código actual que se está ejecutando (para el visor de código).
+     * @param {number} lineIndex - Índice de la línea (0-based)
+     */
+    setLine(lineIndex) {
+        this.engine.registerDelta({
+            type: 'SET_LINE',
+            lineIndex
+        });
+    }
+
+    /**
      * Solicita la mutación de un valor (con memoria del estado previo).
      */
     set(index, value, buffer = 'main') {
