@@ -5,7 +5,6 @@
  * y resalta la línea en ejecución leyendo el currentLine del Snapshot.
  */
 import { eventBus } from '../core/events/EventBus.js';
-import { BUBBLE_SORT_CODE } from '../core/algorithms/BubbleSort.js'; // Temporalmente acoplado hasta que lo inyectemos vía estado global
 
 export default class CodeViewer extends HTMLElement {
     constructor() {
@@ -13,18 +12,19 @@ export default class CodeViewer extends HTMLElement {
         this.codeLines = [];
         this.currentLineElements = [];
         this.handleStepApplied = this.updateUI.bind(this);
+        this.handleAlgorithmLoaded = (payload) => {
+            this.codeLines = payload.code || [];
+            this.renderInitialCode();
+        };
     }
 
     connectedCallback() {
-        // En un futuro, el código vendrá del Simulator al emitir un "ALGORITHM_LOADED"
-        // Por ahora, para Fase 3, usamos el de Bubble Sort directo.
-        this.codeLines = BUBBLE_SORT_CODE;
-        this.renderInitialCode();
-
+        eventBus.subscribe('ALGORITHM_LOADED', this.handleAlgorithmLoaded);
         eventBus.subscribe('STEP_APPLIED', this.handleStepApplied);
     }
 
     disconnectedCallback() {
+        eventBus.unsubscribe('ALGORITHM_LOADED', this.handleAlgorithmLoaded);
         eventBus.unsubscribe('STEP_APPLIED', this.handleStepApplied);
     }
 
