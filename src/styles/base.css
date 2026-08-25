@@ -1,0 +1,67 @@
+/**
+ * Variables Globales y Reset CSS
+ * Sigue la metodología BEM y principios de Diseño Centrado en el Usuario.
+ */
+
+:root {
+    /* Paleta de Colores - Tema Oscuro Elegante para reducir fatiga visual */
+    --color-bg-main: #121212;
+    --color-bg-surface: #1e1e1e;
+    --color-bg-surface-elevated: #2d2d2d;
+    
+    --color-text-primary: #ffffff;
+    --color-text-secondary: #a0a0a0;
+    
+    /* Colores de Señalización (Principio de Señalización DCU) */
+    --color-accent-primary: #3b82f6; /* Azul para estado base/activo */
+    --color-accent-compare: #eab308; /* Amarillo para elementos siendo comparados */
+    --color-accent-swap: #ef4444;    /* Rojo para intercambios */
+    --color-accent-sorted: #22c55e;  /* Verde para elementos ya ordenados */
+
+    /* Tipografía */
+    --font-family-sans: 'Inter', system-ui, -apple-system, sans-serif;
+    --font-family-mono: 'Fira Code', 'Courier New', monospace;
+    
+    /* Espaciados y Dimensiones */
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    
+    --border-radius-sm: 4px;
+    --border-radius-md: 8px;
+    
+    /* Transiciones */
+    --transition-speed-fast: 150ms;
+    --transition-speed-normal: 300ms;
+}
+
+/* Reset Básico */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-family-sans);
+    background-color: var(--color-bg-main);
+    color: var(--color-text-primary);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+}
+
+/* Tokens de Código (Syntax Highlighting Ligero) */
+.token-keyword { color: #c678dd; } 
+.token-number { color: #d19a66; } 
+.token-function { color: #61afef; }
+
+/* Tema Accesible (Daltonismo) */
+html[data-theme="colorblind"] {
+    --color-accent-primary: #0072B2; /* Azul seguro */
+    --color-accent-compare: #F0E442; /* Amarillo seguro */
+    --color-accent-swap: #D55E00;    /* Naranja/Bermellón en lugar de rojo puro */
+    --color-accent-sorted: #009E73;  /* Verde azulado de alto contraste */
+}

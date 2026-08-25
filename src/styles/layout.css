@@ -1,0 +1,61 @@
+/**
+ * Layout Principal de la Aplicación
+ * Utiliza CSS Grid para asegurar la contigüidad espacial.
+ */
+
+.app-layout {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    min-height: 100vh;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md);
+}
+
+.app-header {
+    background-color: var(--color-bg-surface);
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius-md);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.app-main {
+    display: grid;
+    /* Grid de dos columnas: Visualización (mayor espacio) y Código (menor espacio) */
+    grid-template-columns: 2fr 1fr; 
+    gap: var(--spacing-md);
+    min-height: 0; /* Permite scroll interno si es necesario */
+}
+
+.visualization-area {
+    background-color: var(--color-bg-surface);
+    border-radius: var(--border-radius-md);
+    padding: var(--spacing-lg);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; /* Las barras crecerán de abajo hacia arriba */
+    align-items: center;
+}
+
+.code-area {
+    background-color: var(--color-bg-surface-elevated);
+    border-radius: var(--border-radius-md);
+    padding: var(--spacing-md);
+    font-family: var(--font-family-mono);
+    overflow-y: auto;
+}
+
+.app-footer {
+    background-color: var(--color-bg-surface);
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius-md);
+}
+
+/* Responsividad para pantallas más pequeñas */
+@media (max-width: 1024px) {
+    .app-main {
+        grid-template-columns: 1fr; /* Apila visualización sobre código */
+        grid-template-rows: 1fr auto;
+    }
+}
