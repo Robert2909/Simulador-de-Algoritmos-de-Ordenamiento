@@ -63,7 +63,8 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); /* Toque estético moderno */
+    box-shadow: 0 4px 20px oklch(0 0 0 / 0.05); /* Sombra difuminada moderna */
+    border: 1px solid oklch(0.5 0 0 / 0.08); /* Borde sutil */
 }
 
 .header-controls {
@@ -88,19 +89,23 @@ body {
 
 .app-main {
     display: grid;
-    /* Grid de dos columnas: Visualización (mayor espacio) y Código (menor espacio) */
     grid-template-columns: 2fr 1fr; 
     gap: var(--spacing-md);
-    min-height: 0; /* Permite scroll interno si es necesario */
+    min-height: 0;
+}
+
+.visualization-area, .code-area, .app-footer {
+    background-color: var(--color-bg-surface);
+    border-radius: var(--border-radius-md);
+    box-shadow: 0 4px 20px oklch(0 0 0 / 0.05);
+    border: 1px solid oklch(0.5 0 0 / 0.08);
 }
 
 .visualization-area {
-    background-color: var(--color-bg-surface);
-    border-radius: var(--border-radius-md);
     padding: var(--spacing-lg);
     display: flex;
     flex-direction: column;
-    justify-content: flex-end; /* Las barras crecerán de abajo hacia arriba */
+    justify-content: flex-end;
     align-items: center;
 }
 
@@ -127,36 +132,45 @@ body {
 }
 
 /* =========================================
-   BasicRenderer CSS (Fase 1)
+   ArrayView CSS (Fase 1 + 4 Aesthetics)
    ========================================= */
 #visualization-container {
-    flex-direction: row; /* Las barras van lado a lado */
-    align-items: flex-end; /* Aplanadas abajo */
-    gap: 4px;
+    flex-direction: row; 
+    align-items: flex-end; 
+    gap: 6px; /* Gap ligeramente mayor para que respiren las barras */
 }
 
 .array-bar {
-    width: 100%; /* Toma todo el ancho disponible dividido por el gap */
-    background-color: var(--color-primary, #007bff);
-    border-radius: 4px 4px 0 0;
-    transition: height 0.1s ease, background-color 0.1s ease;
+    width: 100%; 
+    /* Gradiente moderno en vez de color plano */
+    background: linear-gradient(180deg, var(--color-primary) 0%, oklch(from var(--color-primary) calc(l - 0.1) c h) 100%);
+    border-radius: 6px 6px 0 0;
+    /* Transición súper fluida y elástica */
+    transition: height 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.2s ease, transform 0.1s ease;
+    box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.2), 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Modificadores BEM según las marcas del algoritmo */
+/* Modificadores BEM con efectos Glow (Resplandor) */
 .array-bar--active {
-    background-color: var(--color-warning, #ffc107); /* Amarillo: En evaluación */
+    background: linear-gradient(180deg, var(--color-warning) 0%, oklch(from var(--color-warning) calc(l - 0.1) c h) 100%);
+    filter: brightness(1.1) drop-shadow(0 0 8px oklch(from var(--color-warning) l c h / 0.6));
+    z-index: 10;
 }
 
 .array-bar--compare {
-    background-color: var(--color-accent, #17a2b8); /* Cyan: Comparando */
+    background: linear-gradient(180deg, var(--color-accent) 0%, oklch(from var(--color-accent) calc(l - 0.1) c h) 100%);
+    filter: drop-shadow(0 0 6px oklch(from var(--color-accent) l c h / 0.4));
 }
 
 .array-bar--swap {
-    background-color: var(--color-danger, #dc3545); /* Rojo: Intercambiando */
+    background: linear-gradient(180deg, var(--color-danger) 0%, oklch(from var(--color-danger) calc(l - 0.1) c h) 100%);
+    transform: scaleY(1.05); /* Pequeño salto visual al intercambiar */
+    filter: brightness(1.2) drop-shadow(0 0 10px oklch(from var(--color-danger) l c h / 0.7));
+    z-index: 20;
 }
 
 .array-bar--sorted {
-    background-color: var(--color-success, #28a745); /* Verde: Ordenado */
+    background: linear-gradient(180deg, var(--color-success) 0%, oklch(from var(--color-success) calc(l - 0.1) c h) 100%);
 }
 
 /* =========================================
