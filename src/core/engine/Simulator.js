@@ -19,6 +19,9 @@ export default class Simulator {
             buffers: {}
         };
         
+        // Copia inmutable cruda para Testing de Caja Negra (RFC 4.7)
+        this._initialArrayBackup = [...initialArray];
+        
         // Estado de Presentación
         this.presentationState = {
             marks: {},
@@ -62,6 +65,14 @@ export default class Simulator {
                         this._currentStep = new Step(this.trace.length);
                         this._emitStepApplied(step);
                     }
+                    
+                    // Estrategia de Testing (RFC 4.7) - Ejecutar silenciosamente
+                    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname === '') {
+                        import('../../utils/Validator.js').then(module => {
+                            module.Validator.validateSimulation(this, this._initialArrayBackup);
+                        });
+                    }
+                    
                     return false;
                 }
                 
