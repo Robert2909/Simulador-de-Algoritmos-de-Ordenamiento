@@ -13,20 +13,24 @@
 <body>
     <div id="app-root" class="app-layout">
         <header class="app-header">
-            <h1>Simulador de Algoritmos</h1>
-            <!-- Aquí irá el componente de selección de algoritmo -->
+            <h1 data-i18n="app_title">Simulador de Algoritmos</h1>
+            <!-- Aquí irá el componente de selección de algoritmo en el futuro -->
+            <select id="lang-selector" aria-label="Selector de idioma">
+                <option value="es">Español</option>
+                <option value="en">English</option>
+            </select>
         </header>
 
         <main class="app-main">
-            <array-view id="visualization-container" class="visualization-area" aria-label="Visualización del arreglo"></array-view>
+            <array-view id="visualization-container" class="visualization-area" data-i18n-aria="aria_visualization" aria-label="Visualización del arreglo"></array-view>
             
-            <aside id="code-container" class="code-area" aria-label="Código fuente del algoritmo">
+            <aside id="code-container" class="code-area" data-i18n-aria="aria_code" aria-label="Código fuente del algoritmo">
                 <!-- Aquí se montará el componente code-viewer -->
             </aside>
         </main>
 
         <footer class="app-footer">
-            <simulation-controls id="controls-container" class="controls-area" aria-label="Controles de simulación"></simulation-controls>
+            <simulation-controls id="controls-container" class="controls-area" data-i18n-aria="aria_controls" aria-label="Controles de simulación"></simulation-controls>
         </footer>
     </div>
 

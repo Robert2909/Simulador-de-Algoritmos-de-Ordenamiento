@@ -5,6 +5,7 @@
  * gestiona el EventBus de manera autónoma.
  */
 import { eventBus } from '../core/events/EventBus.js';
+import { i18n } from '../utils/I18nEngine.js';
 
 export default class SimulationControls extends HTMLElement {
     constructor() {
@@ -20,12 +21,12 @@ export default class SimulationControls extends HTMLElement {
         // Inyectamos el marcado base al conectarse al DOM
         this.innerHTML = `
             <div class="playback-controls">
-                <button id="btn-prev" class="btn" data-i18n="btn_prev">⏮ Atrás</button>
-                <button id="btn-play-pause" class="btn btn-primary" data-i18n="btn_play">▶ Play</button>
-                <button id="btn-next" class="btn" data-i18n="btn_next">Adelante ⏭</button>
+                <button id="btn-prev" class="btn" data-i18n="btn_prev"></button>
+                <button id="btn-play-pause" class="btn btn-primary" data-i18n="btn_play"></button>
+                <button id="btn-next" class="btn" data-i18n="btn_next"></button>
             </div>
             <div class="speed-control">
-                <label for="speed-slider" data-i18n="label_speed">Velocidad:</label>
+                <label for="speed-slider" data-i18n="label_speed"></label>
                 <input type="range" id="speed-slider" min="10" max="1000" step="10" value="860">
             </div>
         `;
@@ -34,6 +35,9 @@ export default class SimulationControls extends HTMLElement {
         this.btnPlayPause = this.querySelector('#btn-play-pause');
         this.btnNext = this.querySelector('#btn-next');
         this.speedSlider = this.querySelector('#speed-slider');
+
+        // Traducimos el componente inmediatamente después de inyectarlo
+        i18n.translateDOM(this);
 
         this.bindEvents();
         eventBus.subscribe('SIMULATION_COMPLETED', this.handleSimulationCompleted);
@@ -65,7 +69,7 @@ export default class SimulationControls extends HTMLElement {
     }
 
     updatePlayBtnUI() {
-        this.btnPlayPause.textContent = this.isPlaying ? '⏸ Pausa' : '▶ Play';
+        this.btnPlayPause.textContent = this.isPlaying ? i18n.t('btn_pause') : i18n.t('btn_play');
         if (this.isPlaying) {
             this.btnPlayPause.classList.add('btn-active');
         } else {

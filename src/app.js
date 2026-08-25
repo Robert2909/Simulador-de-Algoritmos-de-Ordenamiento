@@ -7,6 +7,7 @@ import Simulator from './core/engine/Simulator.js';
 import BubbleSort from './core/algorithms/BubbleSort.js';
 import { PRNG } from './utils/mathUtils.js';
 import { eventBus } from './core/events/EventBus.js';
+import { i18n } from './utils/I18nEngine.js';
 
 // Importar los Web Components (Se autoconectan al DOM)
 import './components/ArrayView.js';
@@ -20,6 +21,17 @@ class App {
 
     init() {
         document.addEventListener("DOMContentLoaded", () => {
+            // Traducir los textos iniciales (Ej: H1)
+            i18n.translateDOM();
+            
+            // Conectar el Selector de Idioma
+            const langSelector = document.getElementById('lang-selector');
+            if (langSelector) {
+                langSelector.addEventListener('change', (e) => {
+                    i18n.setLocale(e.target.value);
+                });
+            }
+
             this.setupUI();
         });
     }
