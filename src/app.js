@@ -10,6 +10,7 @@ import { eventBus } from './core/events/EventBus.js';
 import { i18n } from './utils/I18nEngine.js';
 import { themeManager } from './utils/ThemeManager.js';
 import { audioEngine } from './core/engine/AudioEngine.js';
+import { storage } from './utils/StorageManager.js';
 
 // Importar los Web Components (Se autoconectan al DOM)
 import './components/ArrayView.js';
@@ -27,14 +28,20 @@ class App {
         document.addEventListener("DOMContentLoaded", () => {
             i18n.translateDOM();
             
+            const prefs = storage.load();
+            
             const langSelector = document.getElementById('lang-selector');
-            if (langSelector) langSelector.addEventListener('change', (e) => i18n.setLocale(e.target.value));
+            if (langSelector) {
+                langSelector.value = prefs.locale;
+                langSelector.addEventListener('change', (e) => i18n.setLocale(e.target.value));
+            }
 
             const themeToggleBtn = document.getElementById('theme-toggle');
             if (themeToggleBtn) themeToggleBtn.addEventListener('click', () => themeManager.toggleTheme());
 
             const muteToggleBtn = document.getElementById('mute-toggle');
             if (muteToggleBtn) {
+                muteToggleBtn.textContent = prefs.muted ? '🔇' : '🔊';
                 muteToggleBtn.addEventListener('click', () => {
                     const isMuted = audioEngine.toggleMute();
                     muteToggleBtn.textContent = isMuted ? '🔇' : '🔊';
@@ -142,6 +149,20 @@ class App {
             window.location.hash = `${currentAlgo}?seed=${payload.seed}&size=${payload.array.length}`;
             
             loadAlgorithm(currentAlgo, payload.array);
+        });
+        
+        // Atajos de teclado universales (RFC 3.8)
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space' && e.target.tagName !== 'BUTTON' && e.target.tagName !== 'INPUT') {
+                e.preventDefault();
+                if (playInterval) {
+                    stopPlayback();
+                    // Notificar a la UI para cambiar botones
+                    eventBus.emit('SIMULATION_STARTED'); // Hack rápido: los botones escuchan esto para Play/Pause
+                } else {
+                    startPlayback();
+                }
+            }
         });
 
         // Carga Inicial

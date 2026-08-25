@@ -6,15 +6,17 @@
  * para inyectar traducciones sin acoplar la lógica a un framework.
  */
 import { translations } from '../data/i18n.js';
+import { storage } from './StorageManager.js';
 
 export class I18nEngine {
-    constructor(defaultLocale = 'es') {
-        this.currentLocale = defaultLocale;
+    constructor() {
+        this.currentLocale = storage.load().locale || 'es';
     }
 
     setLocale(locale) {
         if (translations[locale]) {
             this.currentLocale = locale;
+            storage.save({ locale });
             this.translateDOM();
         } else {
             console.warn(`[I18n] Locale '${locale}' no soportado.`);

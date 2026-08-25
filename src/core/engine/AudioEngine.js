@@ -6,12 +6,13 @@
  * aplicando envolventes para evitar "pops" acústicos.
  */
 import { eventBus } from '../events/EventBus.js';
+import { storage } from '../../utils/StorageManager.js';
 
 export class AudioEngine {
     constructor() {
         this.audioCtx = null;
         this.masterGain = null;
-        this.isMuted = false;
+        this.isMuted = storage.load().muted;
         
         eventBus.subscribe('STEP_APPLIED', this.handleStep.bind(this));
         
@@ -40,6 +41,8 @@ export class AudioEngine {
 
     toggleMute() {
         this.isMuted = !this.isMuted;
+        storage.save({ muted: this.isMuted });
+        
         if (this.masterGain) {
             // Transición suave al silenciar para no cortar bruscamente
             this.masterGain.gain.setTargetAtTime(this.isMuted ? 0 : 0.1, this.audioCtx.currentTime, 0.05);
