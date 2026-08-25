@@ -69,6 +69,22 @@ body {
     transition: background-color 0.3s ease, color 0.3s ease; /* Transición fluida RFC */
 }
 
+/* Color Universal Design (CUD) para Daltonismo (RFC 3.7 y 4.1) */
+[data-colorblind="true"] {
+    --color-primary: oklch(0.6 0.2 250); /* Azul claro seguro */
+}
+
+/* Modificadores de la vista del arreglo amigables para el daltonismo */
+[data-colorblind="true"] .array-bar--compare {
+    background-color: oklch(0.8 0.15 80); /* Amarillo CUD en lugar de verde */
+}
+[data-colorblind="true"] .array-bar--swap {
+    background-color: oklch(0.6 0.15 250); /* Azul CUD en lugar de magenta */
+}
+[data-colorblind="true"] .array-bar--sorted {
+    background-color: oklch(0.5 0.15 300); /* Morado oscuro en lugar de teal */
+}
+
 
 .app-layout {
     display: grid;

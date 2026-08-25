@@ -2,31 +2,46 @@ import { eventBus } from '../events/EventBus.js';
 import { ALGORITHMS_REGISTRY } from '../../data/algorithmsData.js';
 
 class Router {
-    constructor() {
-        this.currentRoute = null;
-        window.addEventListener('hashchange', () => this.handleHashChange());
-    }
-
-    init() {
-        this.handleHashChange();
-    }
-
-    handleHashChange() {
-        let hash = window.location.hash.substring(1);
+    // Lógica pura de Parseo RFC 3.9
+    parseHash() {
+        const rawHash = window.location.hash.replace('#', '');
+        if (!rawHash) return { algoId: 'bubble-sort', params: new URLSearchParams() };
         
-        if (!hash || !ALGORITHMS_REGISTRY[hash]) {
-            hash = 'bubble-sort';
-            window.location.hash = hash;
-            return;
+        const [algoId, queryString] = rawHash.split('?');
+        return { 
+            algoId: algoId || 'bubble-sort', 
+            params: new URLSearchParams(queryString || '') 
+        };
+    }
+
+    updateHash(algoId, seed, size) {
+        window.location.hash = `${algoId}?seed=${seed}&size=${size}`;
+    }
+
+    getInitialConfig() {
+        const { algoId, params } = this.parseHash();
+        const config = { algoId, customArrayConfig: null };
+
+        if (params.has('seed') && params.has('size')) {
+            const seed = parseInt(params.get('seed'), 10);
+            const size = parseInt(params.get('size'), 10);
+            if (!isNaN(seed) && !isNaN(size)) {
+                config.customArrayConfig = { seed, size };
+            }
         }
+        return config;
+    }
 
-        this.currentRoute = hash;
-        const routeData = ALGORITHMS_REGISTRY[hash];
-        
-        eventBus.publish('ROUTE_CHANGED', {
-            routeId: hash,
-            data: routeData
-        });
+    getAlgorithmInstance(id) {
+        const entry = ALGORITHMS_REGISTRY[id] || ALGORITHMS_REGISTRY['bubble-sort'];
+        if (entry && entry.classRef) {
+            return new entry.classRef();
+        }
+        throw new Error(`Algoritmo no soportado o incompleto: ${id}`);
+    }
+    
+    getAlgorithmData(id) {
+        return ALGORITHMS_REGISTRY[id] || ALGORITHMS_REGISTRY['bubble-sort'];
     }
 }
 

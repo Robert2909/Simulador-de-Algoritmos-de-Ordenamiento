@@ -4,7 +4,7 @@
  */
 
 import Simulator from './core/engine/Simulator.js';
-import { getAlgorithmInstance } from './core/algorithms/AlgorithmRegistry.js';
+import { router } from './core/router/Router.js';
 import { PRNG } from './utils/mathUtils.js';
 import { eventBus } from './core/events/EventBus.js';
 import { i18n } from './utils/I18nEngine.js';
@@ -38,6 +38,16 @@ class App {
 
             const themeToggleBtn = document.getElementById('theme-toggle');
             if (themeToggleBtn) themeToggleBtn.addEventListener('click', () => themeManager.toggleTheme());
+
+            const colorblindToggleBtn = document.getElementById('colorblind-toggle');
+            if (colorblindToggleBtn) {
+                // UI Inicial
+                colorblindToggleBtn.style.opacity = prefs.colorblind ? '1' : '0.5';
+                colorblindToggleBtn.addEventListener('click', () => {
+                    themeManager.toggleColorblind();
+                    colorblindToggleBtn.style.opacity = themeManager.isColorblind ? '1' : '0.5';
+                });
+            }
 
             const muteToggleBtn = document.getElementById('mute-toggle');
             if (muteToggleBtn) {
@@ -90,8 +100,11 @@ class App {
                 initialArray = prng.generateRandomArray(20, 10, 100);
             }
             
-            const algo = getAlgorithmInstance(algoId);
-            eventBus.emit('ALGORITHM_LOADED', { code: algo.code });
+            const algo = router.getAlgorithmInstance(algoId);
+            const algoData = router.getAlgorithmData(algoId);
+            
+            // Enviamos todo el código fuente al visor (si es que la DB lo tiene) o desde la clase
+            eventBus.emit('ALGORITHM_LOADED', { code: algoData.codeText ? algoData.codeText.split('\n') : algo.code });
             
             currentSimulator = new Simulator(algo, initialArray, eventBus);
             currentSimulator.initialize();
@@ -99,26 +112,14 @@ class App {
             window.location.hash = algoId;
         };
 
-        // Lógica de Enrutamiento (RFC 3.9 - Reproducibilidad URL)
-        const parseHash = () => {
-            const rawHash = window.location.hash.replace('#', '');
-            if (!rawHash) return { algoId: 'bubble-sort', params: new URLSearchParams() };
-            
-            const [algoId, queryString] = rawHash.split('?');
-            return { algoId: algoId || 'bubble-sort', params: new URLSearchParams(queryString || '') };
-        };
-
-        const { algoId: initialAlgo, params: initialParams } = parseHash();
+        // Lógica de Enrutamiento (RFC 3.1 y 3.9) externalizada al Router
+        const initialConfig = router.getInitialConfig();
+        const initialAlgo = initialConfig.algoId;
         
-        // Aplicar parámetros de la URL si existen para garantizar reproducibilidad
         let customInitialArray = null;
-        if (initialParams.has('seed') && initialParams.has('size')) {
-            const seed = parseInt(initialParams.get('seed'), 10);
-            const size = parseInt(initialParams.get('size'), 10);
-            if (!isNaN(seed) && !isNaN(size)) {
-                const prng = new PRNG(seed);
-                customInitialArray = prng.generateRandomArray(size, 10, 100);
-            }
+        if (initialConfig.customArrayConfig) {
+            const prng = new PRNG(initialConfig.customArrayConfig.seed);
+            customInitialArray = prng.generateRandomArray(initialConfig.customArrayConfig.size, 10, 100);
         }
         
         const algoSelector = document.getElementById('algo-selector');
@@ -143,10 +144,10 @@ class App {
 
         // Suscripción al InputController (Sección 4.6 del RFC)
         eventBus.subscribe('DATA_INPUT_SUBMITTED', (payload) => {
-            const currentAlgo = algoSelector ? algoSelector.value : parseHash().algoId;
+            const currentAlgo = algoSelector ? algoSelector.value : router.parseHash().algoId;
             
-            // Actualizar URL con los nuevos parámetros para compartir
-            window.location.hash = `${currentAlgo}?seed=${payload.seed}&size=${payload.array.length}`;
+            // Actualizar URL mediante el router central
+            router.updateHash(currentAlgo, payload.seed, payload.array.length);
             
             loadAlgorithm(currentAlgo, payload.array);
         });

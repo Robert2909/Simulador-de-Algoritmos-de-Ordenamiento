@@ -10,6 +10,7 @@ export class ThemeManager {
     constructor() {
         // Recuperamos la preferencia guardada (del StorageManager unificado)
         this.currentTheme = storage.load().theme;
+        this.isColorblind = storage.load().colorblind;
         
         // Si es 'system', calculamos en base a las preferencias del OS
         if (this.currentTheme === 'system') {
@@ -17,6 +18,7 @@ export class ThemeManager {
         }
         
         this.applyTheme(this.currentTheme);
+        this.applyColorblind(this.isColorblind);
     }
 
     toggleTheme() {
@@ -28,6 +30,16 @@ export class ThemeManager {
 
     applyTheme(theme) {
         document.documentElement.setAttribute('data-theme', theme);
+    }
+
+    toggleColorblind() {
+        this.isColorblind = !this.isColorblind;
+        this.applyColorblind(this.isColorblind);
+        storage.save({ colorblind: this.isColorblind });
+    }
+
+    applyColorblind(active) {
+        document.documentElement.setAttribute('data-colorblind', active ? 'true' : 'false');
     }
 }
 
