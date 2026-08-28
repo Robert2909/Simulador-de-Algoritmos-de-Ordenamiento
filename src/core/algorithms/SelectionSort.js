@@ -34,14 +34,17 @@ export default class SelectionSort extends BaseAlgorithm {
         yield;
         
         for (let i = 0; i < n - 1; i++) {
+            context.setPointer('i', i);
             context.setLine(3);
             let minIdx = i;
+            context.setPointer('min', minIdx);
             yield;
             
             context.setLine(4);
             yield;
             
             for (let j = i + 1; j < n; j++) {
+                context.setPointer('j', j);
                 context.mark(j, 'active');
                 context.mark(minIdx, 'compare');
                 
@@ -53,6 +56,7 @@ export default class SelectionSort extends BaseAlgorithm {
                     context.setLine(6);
                     context.clearMark('compare'); // clear old minIdx
                     minIdx = j;
+                    context.setPointer('min', minIdx);
                     yield;
                 } else {
                     context.clearMark('active');
@@ -61,6 +65,7 @@ export default class SelectionSort extends BaseAlgorithm {
                 context.setLine(4);
                 yield;
             }
+            context.clearPointer('j');
 
             context.setLine(9);
             yield;
@@ -72,6 +77,7 @@ export default class SelectionSort extends BaseAlgorithm {
             }
             
             context.clearMark('compare'); // clear minIdx highlight
+            context.clearPointer('min');
             
             context.setLine(12);
             context.mark(i, 'sorted');
@@ -80,6 +86,9 @@ export default class SelectionSort extends BaseAlgorithm {
             context.setLine(2);
             yield;
         }
+        context.clearPointer('i');
+        context.clearPointer('j');
+        context.clearPointer('min');
         
         context.setLine(14);
         for (let k = 0; k < n; k++) {

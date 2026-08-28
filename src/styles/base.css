@@ -15,8 +15,12 @@
     /* Colores de Señalización (Principio de Señalización DCU) */
     --color-accent-primary: #3b82f6; /* Azul para estado base/activo */
     --color-accent-compare: #eab308; /* Amarillo para elementos siendo comparados */
-    --color-accent-swap: #ef4444;    /* Rojo para intercambios */
     --color-accent-sorted: #22c55e;  /* Verde para elementos ya ordenados */
+
+    /* Tokens para Punteros Semánticos (Sincronía Visual Mayer) */
+    --color-pointer-i: oklch(0.72 0.18 145);      /* Verde esmeralda brillante */
+    --color-pointer-j: oklch(0.75 0.16 220);      /* Azul cian */
+    --color-pointer-min: oklch(0.75 0.20 55);     /* Naranja ámbar */
 
     /* Tipografía */
     --font-family-sans: 'Inter', system-ui, -apple-system, sans-serif;
@@ -58,10 +62,18 @@ body {
 .token-number { color: #d19a66; } 
 .token-function { color: #61afef; }
 
+/* Identificadores con sincronía semántica a punteros */
+.token-id-i { color: var(--color-pointer-i); font-weight: 700; }
+.token-id-j { color: var(--color-pointer-j); font-weight: 700; }
+.token-id-minIdx, .token-id-min { color: var(--color-pointer-min); font-weight: 700; }
+
 /* Tema Accesible (Daltonismo) */
 html[data-theme="colorblind"] {
     --color-accent-primary: #0072B2; /* Azul seguro */
     --color-accent-compare: #F0E442; /* Amarillo seguro */
     --color-accent-swap: #D55E00;    /* Naranja/Bermellón en lugar de rojo puro */
     --color-accent-sorted: #009E73;  /* Verde azulado de alto contraste */
+    --color-pointer-i: #009E73;
+    --color-pointer-j: #56B4E9;
+    --color-pointer-min: #E69F00;
 }

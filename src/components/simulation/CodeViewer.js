@@ -46,7 +46,7 @@ export default class CodeViewer extends HTMLElement {
                     lineEl.appendChild(document.createTextNode(t.value));
                 } else {
                     const span = document.createElement('span');
-                    span.className = `token-${t.type}`;
+                    span.className = `token-${t.type} token-id-${t.value}`;
                     span.textContent = t.value;
                     lineEl.appendChild(span);
                 }

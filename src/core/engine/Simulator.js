@@ -24,6 +24,7 @@ export default class Simulator {
         
         // Estado de Presentación
         this.presentationState = {
+            activePointers: {},
             marks: {},
             lastComparison: null,
             currentLine: null
@@ -177,10 +178,15 @@ export default class Simulator {
             };
         } else if (op.type === 'SET_LINE') {
             this.presentationState.currentLine = op.lineIndex;
+        } else if (op.type === 'SET_POINTER') {
+            this.presentationState.activePointers[op.name] = op.index;
+        } else if (op.type === 'CLEAR_POINTER') {
+            delete this.presentationState.activePointers[op.name];
         }
     }
 
     _reconstructPresentationState(targetStepIndex) {
+        this.presentationState.activePointers = {};
         this.presentationState.marks = {};
         this.presentationState.lastComparison = null;
         this.presentationState.currentLine = null;
@@ -192,6 +198,10 @@ export default class Simulator {
                     this.presentationState.marks[op.role] = op.indices;
                 } else if (op.type === 'CLEAR_MARK') {
                     delete this.presentationState.marks[op.role];
+                } else if (op.type === 'SET_POINTER') {
+                    this.presentationState.activePointers[op.name] = op.index;
+                } else if (op.type === 'CLEAR_POINTER') {
+                    delete this.presentationState.activePointers[op.name];
                 } else if (op.type === 'COMPARE') {
                     this.presentationState.lastComparison = {
                         left: op.leftIndex,
@@ -235,6 +245,7 @@ export default class Simulator {
         if (!this.eventBus) return;
         
         const presentationSnapshot = {
+            activePointers: { ...this.presentationState.activePointers },
             marks: { ...this.presentationState.marks },
             lastComparison: this.presentationState.lastComparison 
                 ? { ...this.presentationState.lastComparison } : null,

@@ -74,6 +74,30 @@ export default class AlgorithmContext {
         });
     }
 
+    /**
+     * Asigna un puntero semántico a un índice (ej. 'i', 'j', 'minIdx').
+     * @param {string} name - Nombre identificador del puntero.
+     * @param {number} index - Índice al que apunta.
+     */
+    setPointer(name, index) {
+        this.engine.registerDelta({
+            type: 'SET_POINTER',
+            name,
+            index
+        });
+    }
+
+    /**
+     * Elimina un puntero semántico activo.
+     * @param {string} name - Nombre del puntero a limpiar.
+     */
+    clearPointer(name) {
+        this.engine.registerDelta({
+            type: 'CLEAR_POINTER',
+            name
+        });
+    }
+
     // --- State Mutations (Commands matemáticos reversibles) ---
 
     /**

@@ -41,6 +41,7 @@ export default class BubbleSort extends BaseAlgorithm {
         context.setLine(3);
         yield;
         for (let i = 0; i < n - 1; i++) {
+            context.setPointer('i', i);
             context.setLine(4);
             swapped = false;
             yield;
@@ -48,6 +49,7 @@ export default class BubbleSort extends BaseAlgorithm {
             context.setLine(5);
             yield;
             for (let j = 0; j < n - i - 1; j++) {
+                context.setPointer('j', j);
                 context.mark(j, 'active');
                 context.mark(j + 1, 'active');
                 
@@ -69,6 +71,7 @@ export default class BubbleSort extends BaseAlgorithm {
                 context.setLine(5);
                 yield;
             }
+            context.clearPointer('j');
 
             context.setLine(11);
             context.mark(n - i - 1, 'sorted');
@@ -83,6 +86,8 @@ export default class BubbleSort extends BaseAlgorithm {
             context.setLine(3);
             yield;
         }
+        context.clearPointer('i');
+        context.clearPointer('j');
         
         context.setLine(14);
         for (let k = 0; k < n; k++) {

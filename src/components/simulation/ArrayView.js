@@ -42,18 +42,58 @@ export default class ArrayView extends HTMLElement {
         // Renderizado Híbrido: Si cambia el tamaño, recreamos DOM; si no, reciclamos (permitiendo transiciones CSS)
         if (this.children.length !== state.length || this.querySelector('.empty-state')) {
             this.innerHTML = '';
-            state.forEach(() => {
+            state.forEach((_, idx) => {
+                const col = document.createElement('div');
+                col.className = 'array-col';
+                
+                const barContainer = document.createElement('div');
+                barContainer.className = 'array-bar-container';
+                
                 const bar = document.createElement('div');
-                this.appendChild(bar);
+                bar.className = 'array-bar';
+                
+                const badgesWrap = document.createElement('div');
+                badgesWrap.className = 'pointer-badges';
+                bar.appendChild(badgesWrap);
+                
+                const valLabel = document.createElement('span');
+                valLabel.className = 'bar-value';
+                bar.appendChild(valLabel);
+                
+                barContainer.appendChild(bar);
+                
+                const indexLabel = document.createElement('span');
+                indexLabel.className = 'bar-index';
+                indexLabel.textContent = idx;
+                
+                col.appendChild(barContainer);
+                col.appendChild(indexLabel);
+                
+                this.appendChild(col);
             });
         }
+
+        const pointers = payload.presentationSnapshot.activePointers || {};
         
-        const bars = this.children;
+        // Mapear qué punteros semánticos apuntan a cada índice
+        const indexPointersMap = {};
+        for (const [pointerName, targetIdx] of Object.entries(pointers)) {
+            if (targetIdx !== null && targetIdx !== undefined && targetIdx >= 0 && targetIdx < state.length) {
+                if (!indexPointersMap[targetIdx]) indexPointersMap[targetIdx] = [];
+                indexPointersMap[targetIdx].push(pointerName);
+            }
+        }
+        
+        const cols = this.children;
         state.forEach((val, index) => {
-            const bar = bars[index];
+            const col = cols[index];
+            const bar = col.querySelector('.array-bar');
+            const badgesWrap = bar.querySelector('.pointer-badges');
+            const valLabel = bar.querySelector('.bar-value');
             
-            // Altura dinámica animable
+            // Altura dinámica animable y valor
             bar.style.height = `${(val / maxVal) * 100}%`;
+            valLabel.textContent = val;
             
             // Reiniciar clases a estado base
             bar.className = 'array-bar';
@@ -63,9 +103,20 @@ export default class ArrayView extends HTMLElement {
             if (marks['swap'] && marks['swap'].includes(index)) bar.classList.add('array-bar--swap');
             if (marks['sorted'] && marks['sorted'].includes(index)) bar.classList.add('array-bar--sorted');
             
+            // Renderizar insignias de punteros para este índice
+            badgesWrap.innerHTML = '';
+            const activeHere = indexPointersMap[index] || [];
+            activeHere.forEach(pName => {
+                const badge = document.createElement('span');
+                badge.className = `pointer-badge pointer-badge--${pName}`;
+                badge.textContent = pName;
+                badgesWrap.appendChild(badge);
+            });
+            
             // Atributos Accesibles (RFC 3.8)
             bar.setAttribute('role', 'meter');
             bar.setAttribute('aria-valuenow', val);
+            bar.setAttribute('aria-label', `Posición ${index}, valor ${val}`);
         });
     }
 }
