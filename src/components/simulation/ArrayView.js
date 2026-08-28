@@ -5,6 +5,7 @@
  * Respeta el ciclo de vida estricto para evitar Memory Leaks (RFC 3.4).
  */
 import { eventBus } from '../../core/events/EventBus.js';
+import { i18n } from '../../services/I18nEngine.js';
 
 export default class ArrayView extends HTMLElement {
     constructor() {
@@ -27,8 +28,19 @@ export default class ArrayView extends HTMLElement {
         const marks = payload.presentationSnapshot.marks || {};
         const maxVal = Math.max(...state, 1);
         
+        // Manejo de Estados Límite (Edge & Empty States RFC 10.4)
+        if (state.length === 0) {
+            this.innerHTML = `<div class="empty-state" style="margin: auto; padding: 20px; text-align: center; color: var(--text-muted); font-size: 1.2rem;">${i18n.t('msg_empty_array')}</div>`;
+            return;
+        }
+
+        if (state.length === 1) {
+            this.innerHTML = `<div class="empty-state" style="margin: auto; padding: 20px; text-align: center; color: var(--primary-color); font-size: 1.2rem; font-weight: bold;">${i18n.t('msg_single_element')}</div>`;
+            return;
+        }
+
         // Renderizado Híbrido: Si cambia el tamaño, recreamos DOM; si no, reciclamos (permitiendo transiciones CSS)
-        if (this.children.length !== state.length) {
+        if (this.children.length !== state.length || this.querySelector('.empty-state')) {
             this.innerHTML = '';
             state.forEach(() => {
                 const bar = document.createElement('div');

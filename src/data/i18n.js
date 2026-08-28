@@ -23,7 +23,9 @@ export const translations = {
         aria_algo_selector: "Selector de algoritmo",
         aria_lang_selector: "Selector de idioma",
         btn_load_csv: "📄 Cargar CSV",
-        placeholder_csv: "Ej: 5, 12, 4, 8"
+        placeholder_csv: "Ej: 5, 12, 4, 8",
+        msg_empty_array: "El arreglo está vacío. Por favor, proporciona datos.",
+        msg_single_element: "El arreglo tiene 1 elemento. Ya está ordenado."
     },
     en: {
         app_title: "Algorithm Simulator",
@@ -43,6 +45,8 @@ export const translations = {
         aria_algo_selector: "Algorithm selector",
         aria_lang_selector: "Language selector",
         btn_load_csv: "📄 Load CSV",
-        placeholder_csv: "Ex: 5, 12, 4, 8"
+        placeholder_csv: "Ex: 5, 12, 4, 8",
+        msg_empty_array: "The array is empty. Please provide some data.",
+        msg_single_element: "The array has 1 element. It is already sorted."
     }
 };

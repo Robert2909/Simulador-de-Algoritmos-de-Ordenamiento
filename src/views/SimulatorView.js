@@ -44,8 +44,23 @@ export class SimulatorView extends HTMLElement {
 
     disconnectedCallback() {
         this.stopPlayback();
-        this.unbindEvents();
+        
+        eventBus.unsubscribe('PLAY_REQUESTED', this.boundStartPlayback);
+        eventBus.unsubscribe('PAUSE_REQUESTED', this.boundStopPlayback);
+        eventBus.unsubscribe('STEP_FORWARD_REQUESTED', this.boundStepForward);
+        eventBus.unsubscribe('STEP_BACKWARD_REQUESTED', this.boundStepBackward);
+        eventBus.unsubscribe('SPEED_CHANGED', this.boundSpeedChanged);
+        eventBus.unsubscribe('DATA_INPUT', this.boundDataInput);
+        
+        document.removeEventListener('keydown', this.boundKeydown);
+        
+        const algoSelector = document.getElementById('algo-selector');
+        if (algoSelector) {
+            algoSelector.removeEventListener('change', this.boundAlgoChange);
+        }
     }
+
+
 
     render() {
         this.innerHTML = `
