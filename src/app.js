@@ -157,11 +157,9 @@ class App {
             if (e.code === 'Space' && e.target.tagName !== 'BUTTON' && e.target.tagName !== 'INPUT') {
                 e.preventDefault();
                 if (playInterval) {
-                    stopPlayback();
-                    // Notificar a la UI para cambiar botones
-                    eventBus.emit('SIMULATION_STARTED'); // Hack rápido: los botones escuchan esto para Play/Pause
+                    eventBus.emit('PAUSE_REQUESTED');
                 } else {
-                    startPlayback();
+                    eventBus.emit('PLAY_REQUESTED');
                 }
             }
         });

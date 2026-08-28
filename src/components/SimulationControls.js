@@ -43,19 +43,31 @@ export default class SimulationControls extends HTMLElement {
         // Traducimos el componente inmediatamente después de inyectarlo
         i18n.translateDOM(this);
 
+        this.handlePlayRequested = () => {
+            this.isPlaying = true;
+            this.updatePlayBtnUI();
+        };
+        
+        this.handlePauseRequested = () => {
+            this.isPlaying = false;
+            this.updatePlayBtnUI();
+        };
+
         this.bindEvents();
         eventBus.subscribe('SIMULATION_COMPLETED', this.handleSimulationCompleted);
+        eventBus.subscribe('PLAY_REQUESTED', this.handlePlayRequested);
+        eventBus.subscribe('PAUSE_REQUESTED', this.handlePauseRequested);
     }
 
     disconnectedCallback() {
         eventBus.unsubscribe('SIMULATION_COMPLETED', this.handleSimulationCompleted);
+        eventBus.unsubscribe('PLAY_REQUESTED', this.handlePlayRequested);
+        eventBus.unsubscribe('PAUSE_REQUESTED', this.handlePauseRequested);
     }
 
     bindEvents() {
         this.btnPlayPause.addEventListener('click', () => {
-            this.isPlaying = !this.isPlaying;
-            this.updatePlayBtnUI();
-            eventBus.emit(this.isPlaying ? 'PLAY_REQUESTED' : 'PAUSE_REQUESTED');
+            eventBus.emit(this.isPlaying ? 'PAUSE_REQUESTED' : 'PLAY_REQUESTED');
         });
 
         this.btnNext.addEventListener('click', () => {

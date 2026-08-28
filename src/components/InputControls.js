@@ -27,8 +27,8 @@ export default class InputControls extends HTMLElement {
                 <button id="btn-generate" class="btn btn-primary" data-i18n="btn_generate">🎲 Random</button>
                 
                 <div style="display: flex; gap: 8px; align-items: center; margin-left: auto;">
-                    <input type="text" id="csv-input" placeholder="Ej: 5, 12, 4, 8" style="padding: 4px 8px; border-radius: 4px; border: 1px solid oklch(0.5 0 0 / 0.2); width: 150px;">
-                    <button id="btn-submit-csv" class="btn btn-primary">Cargar CSV</button>
+                    <input type="text" id="csv-input" data-i18n-placeholder="placeholder_csv" placeholder="Ej: 5, 12, 4, 8" style="padding: 4px 8px; border-radius: 4px; border: 1px solid oklch(0.5 0 0 / 0.2); width: 150px;">
+                    <button id="btn-submit-csv" class="btn btn-primary" data-i18n="btn_load_csv">📄 Cargar CSV</button>
                 </div>
             </div>
         `;

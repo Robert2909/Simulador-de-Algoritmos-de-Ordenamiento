@@ -11,12 +11,14 @@ import { storage } from './StorageManager.js';
 export class I18nEngine {
     constructor() {
         this.currentLocale = storage.load().locale || 'es';
+        document.documentElement.lang = this.currentLocale;
     }
 
     setLocale(locale) {
         if (translations[locale]) {
             this.currentLocale = locale;
             storage.save({ locale });
+            document.documentElement.lang = locale;
             this.translateDOM();
         } else {
             console.warn(`[I18n] Locale '${locale}' no soportado.`);
@@ -40,6 +42,13 @@ export class I18nEngine {
         ariaElements.forEach(el => {
             const key = el.getAttribute('data-i18n-aria');
             el.setAttribute('aria-label', this.t(key));
+        });
+
+        // 3. Traducciones de Placeholder
+        const placeholderElements = rootElement.querySelectorAll('[data-i18n-placeholder]');
+        placeholderElements.forEach(el => {
+            const key = el.getAttribute('data-i18n-placeholder');
+            el.setAttribute('placeholder', this.t(key));
         });
     }
 }
