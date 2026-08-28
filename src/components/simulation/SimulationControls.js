@@ -4,9 +4,9 @@
  * Web Component para los controles. Inyecta su propio HTML y 
  * gestiona el EventBus de manera autónoma.
  */
-import { eventBus } from '../core/events/EventBus.js';
-import { i18n } from '../utils/I18nEngine.js';
-import { storage } from '../utils/StorageManager.js';
+import { eventBus } from '../../core/events/EventBus.js';
+import { i18n } from '../../services/I18nEngine.js';
+import { storage } from '../../services/StorageManager.js';
 
 export default class SimulationControls extends HTMLElement {
     constructor() {

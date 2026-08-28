@@ -1,6 +1,6 @@
-import { eventBus } from '../core/events/EventBus.js';
-import { PRNG } from '../utils/mathUtils.js';
-import { storage } from '../utils/StorageManager.js';
+import { eventBus } from '../../core/events/EventBus.js';
+import { PRNG } from '../../utils/mathUtils.js';
+import { storage } from '../../services/StorageManager.js';
 
 export default class InputControls extends HTMLElement {
     constructor() {

@@ -11,6 +11,20 @@
     <link rel="stylesheet" href="./src/styles/layout.css">
 </head>
 <body>
+    <script>
+        window.onerror = function(message, source, lineno, colno, error) {
+            const errDiv = document.createElement('div');
+            errDiv.style = 'position:fixed; top:0; left:0; width:100%; padding:20px; background:red; color:white; z-index:9999; font-family:monospace;';
+            errDiv.innerText = 'ERROR: ' + message + '\\n' + source + ':' + lineno;
+            document.body.appendChild(errDiv);
+        };
+        window.addEventListener('unhandledrejection', function(e) {
+            const errDiv = document.createElement('div');
+            errDiv.style = 'position:fixed; top:0; left:0; width:100%; padding:20px; background:red; color:white; z-index:9999; font-family:monospace;';
+            errDiv.innerText = 'PROMISE ERROR: ' + (e.reason && e.reason.stack ? e.reason.stack : e.reason);
+            document.body.appendChild(errDiv);
+        });
+    </script>
     <div id="app-root" class="app-layout">
         <header class="app-header">
             <h1 data-i18n="app_title">Simulador de Algoritmos</h1>
@@ -30,18 +44,7 @@
             </div>
         </header>
 
-        <main class="app-main">
-            <array-view id="visualization-container" class="visualization-area" data-i18n-aria="aria_visualization" aria-label="Visualización del arreglo"></array-view>
-            
-            <code-viewer id="code-container" class="code-area" data-i18n-aria="aria_code" aria-label="Código fuente del algoritmo"></code-viewer>
-        </main>
-
-        <footer class="app-footer">
-            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--spacing-md);">
-                <input-controls></input-controls>
-                <simulation-controls id="controls-container" class="controls-area" data-i18n-aria="aria_controls" aria-label="Controles de simulación"></simulation-controls>
-            </div>
-        </footer>
+        <div id="app-viewport" style="display: flex; flex-direction: column; flex: 1; overflow: hidden;"></div>
     </div>
 
     <!-- Script principal como módulo ES6 -->

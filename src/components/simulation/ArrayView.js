@@ -4,7 +4,7 @@
  * Web Component puro (Custom Element) que maneja la visualización.
  * Respeta el ciclo de vida estricto para evitar Memory Leaks (RFC 3.4).
  */
-import { eventBus } from '../core/events/EventBus.js';
+import { eventBus } from '../../core/events/EventBus.js';
 
 export default class ArrayView extends HTMLElement {
     constructor() {

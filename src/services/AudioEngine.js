@@ -5,8 +5,8 @@
  * Convierte los valores del arreglo en frecuencias audibles usando Web Audio API,
  * aplicando envolventes para evitar "pops" acústicos.
  */
-import { eventBus } from '../events/EventBus.js';
-import { storage } from '../../utils/StorageManager.js';
+import { eventBus } from '../core/events/EventBus.js';
+import { storage } from './StorageManager.js';
 
 export class AudioEngine {
     constructor() {

@@ -1,5 +1,5 @@
-import { eventBus } from '../events/EventBus.js';
-import { ALGORITHMS_REGISTRY } from '../../data/algorithmsData.js';
+import { eventBus } from '../core/events/EventBus.js';
+import { ALGORITHMS_REGISTRY } from '../data/algorithmsData.js';
 
 class Router {
     // Lógica pura de Parseo RFC 3.9

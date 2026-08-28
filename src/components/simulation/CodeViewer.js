@@ -4,8 +4,8 @@
  * Web Component que renderiza el pseudocódigo del algoritmo actual
  * y resalta la línea en ejecución leyendo el currentLine del Snapshot.
  */
-import { eventBus } from '../core/events/EventBus.js';
-import { Lexer } from '../utils/Lexer.js';
+import { eventBus } from '../../core/events/EventBus.js';
+import { Lexer } from '../../utils/Lexer.js';
 
 export default class CodeViewer extends HTMLElement {
     constructor() {
@@ -65,8 +65,8 @@ export default class CodeViewer extends HTMLElement {
         // Remover highlight previo
         this.currentLineElements.forEach(el => el.classList.remove('code-line--active'));
         
-        // Aplicar highlight si es válido
-        if (currentLine !== undefined && currentLine >= 0 && currentLine < this.currentLineElements.length) {
+        // Aplicar highlight si es válido (null check estricto porque null >= 0 es true en JS)
+        if (currentLine !== null && currentLine !== undefined && currentLine >= 0 && currentLine < this.currentLineElements.length) {
             this.currentLineElements[currentLine].classList.add('code-line--active');
             // Hacer scroll si es necesario
             this.currentLineElements[currentLine].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
