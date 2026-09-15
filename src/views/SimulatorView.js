@@ -180,7 +180,10 @@ export class SimulatorView extends HTMLElement {
         const algo = router.getAlgorithmInstance(algoId);
         const algoData = router.getAlgorithmData(algoId);
         
-        eventBus.emit('ALGORITHM_LOADED', { code: algoData.codeText ? algoData.codeText.split('\n') : algo.code });
+        eventBus.emit('ALGORITHM_LOADED', { 
+            algoId, 
+            code: algoData.codeText ? algoData.codeText.split('\n') : algo.code 
+        });
         
         this.currentSimulator = new Simulator(algo, initialArray, eventBus);
         this.currentSimulator.initialize();

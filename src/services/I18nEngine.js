@@ -7,6 +7,7 @@
  */
 import { translations } from '../data/i18n.js';
 import { storage } from './StorageManager.js';
+import { eventBus } from '../core/events/EventBus.js';
 
 export class I18nEngine {
     constructor() {
@@ -20,13 +21,18 @@ export class I18nEngine {
             storage.save({ locale });
             document.documentElement.lang = locale;
             this.translateDOM();
+            eventBus.emit('LOCALE_CHANGED', { locale });
         } else {
             console.warn(`[I18n] Locale '${locale}' no soportado.`);
         }
     }
 
-    t(key) {
-        return translations[this.currentLocale][key] || key;
+    t(key, params = {}) {
+        let str = (translations[this.currentLocale] && translations[this.currentLocale][key]) || key;
+        for (const [k, v] of Object.entries(params)) {
+            str = str.replaceAll(`{${k}}`, v);
+        }
+        return str;
     }
 
     translateDOM(rootElement = document) {
